@@ -1,0 +1,29 @@
+version: "3"
+services: 
+ backend:
+  container_name: Devconnector_backend
+  build:
+   context: ./server
+   dockerfile: Dockerfile
+  volumes: 
+   - './server:/usr/src/app'
+   - '/usr/src/app/node_modules'
+  ports:
+   - '5001:5001'
+  environment:
+   - NODE_ENV=development
+   - CHOKIDAR_USEPOLLING=true
+ frontend:
+  container_name: Devconnector_frontend
+  build:
+   context: ./client
+   dockerfile: Dockerfile
+  volumes:
+   - './client/:/usr/src/app'
+   - '/usr/src/app/node_modules'
+  depends_on:
+   - backend
+  ports:
+   - '3000:3000'
+  environment:
+   - NODE_ENV=development
